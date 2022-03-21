@@ -4,12 +4,23 @@ import spark.Spark.*
 import spark.Request
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import gameDataObjects.board.CatanSecondBoard
+import gameDataObjects.board.strategy.CatanBoardLayoutStrategyFirst
+import gameDataObjects.factory.CatanNumberCirclePieceFactory
+import gameDataObjects.factory.CatanResourceHexagonTileFactory
+import gameDataObjects.types.CatanColor
 
 fun main(args: Array<String>) {
 
     exception(Exception::class.java) { e, req, res -> e.printStackTrace() }
 
     val userDao = UserDao()
+    val boardStrategy =
+        CatanBoardLayoutStrategyFirst(
+            CatanResourceHexagonTileFactory(),
+            CatanNumberCirclePieceFactory()
+        )
+    val board = boardStrategy.strategyImplementation(setOf(CatanColor.BLUE, CatanColor.RED))
 
     path("/users") {
 
