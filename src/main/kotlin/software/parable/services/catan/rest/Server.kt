@@ -4,7 +4,6 @@ import spark.Spark.*
 import spark.Request
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import gameDataObjects.board.CatanSecondBoard
 import gameDataObjects.board.strategy.CatanBoardLayoutStrategyFirst
 import gameDataObjects.factory.CatanNumberCirclePieceFactory
 import gameDataObjects.factory.CatanResourceHexagonTileFactory
@@ -22,6 +21,12 @@ fun main(args: Array<String>) {
         )
     val board = boardStrategy.strategyImplementation(setOf(CatanColor.BLUE, CatanColor.RED))
 
+    path("/catan") {
+        get("") {req, res ->
+            jacksonObjectMapper().writeValueAsString(board.getBoardGamePieceLocations())
+        }
+    }
+    
     path("/users") {
 
         get("") { req, res ->
