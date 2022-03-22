@@ -1,4 +1,4 @@
-package org.example
+package software.parable.gameDataObject
 
 import gameDataObjects.board.strategy.CatanBoardLayoutStrategyFirst
 import gameDataObjects.factory.CatanNumberCirclePieceFactory
