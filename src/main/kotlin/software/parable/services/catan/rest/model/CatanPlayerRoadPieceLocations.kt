@@ -3,9 +3,9 @@ package software.parable.services.catan.rest.model
 import gameDataObjects.types.CatanColor
 import gameDataObjects.types.CatanRoadCoordinates
 
-typealias RoadLocationsModel = Pair<Pair<Int, Int>, Pair<Int, Int>>
+typealias RoadLocationsModel = HashMap<String, Int>
 
-class CatanPlayerPieceLocations: CatanJacksonModelResponse
+class CatanPlayerRoadPieceLocations: CatanJacksonModelResponse
         <MutableMap<CatanRoadCoordinates, CatanColor?>,
                 String,
                 List<RoadLocationsModel>>() {
@@ -31,14 +31,11 @@ class CatanPlayerPieceLocations: CatanJacksonModelResponse
 
     private fun getRoadPieces(model: MutableMap<CatanRoadCoordinates, CatanColor?>, ofColor: CatanColor): List<RoadLocationsModel> {
         return model.keys.filter { key -> model[key] == ofColor }
-            .map { key -> Pair(
-                Pair(
-                    key.roadCoordinates.first().x,
-                    key.roadCoordinates.first().y),
-                Pair(
-                    key.roadCoordinates.last().x,
-                    key.roadCoordinates.last().y
-                )
+            .map { key -> hashMapOf(
+                "x" to key.roadCoordinates.first().x,
+                "y" to key.roadCoordinates.first().y,
+                "x1" to key.roadCoordinates.last().x,
+                "y1" to key.roadCoordinates.last().y
             ) }
     }
 }

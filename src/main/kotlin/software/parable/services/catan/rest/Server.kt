@@ -8,7 +8,8 @@ import gameDataObjects.board.strategy.CatanBoardLayoutStrategyFirst
 import gameDataObjects.factory.CatanNumberCirclePieceFactory
 import gameDataObjects.factory.CatanResourceHexagonTileFactory
 import gameDataObjects.types.*
-import software.parable.services.catan.rest.model.CatanPlayerPieceLocations
+import software.parable.services.catan.rest.model.CatanPlayerRoadPieceLocations
+import software.parable.services.catan.rest.model.CatanPlayerSettlementPieceLocations
 
 fun main(args: Array<String>) {
 
@@ -45,9 +46,15 @@ fun main(args: Array<String>) {
     board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(2,3), CatanCoordinate(2,4))), CatanColor.RED)
 
     path("/catan") {
-        get("") { req, res ->
+        get("/roads") { req, res ->
             jacksonObjectMapper().writeValueAsString(
-                    CatanPlayerPieceLocations().translateModel(board.getBoardRoadPieceLocations()
+                    CatanPlayerRoadPieceLocations().translateModel(board.getBoardRoadPieceLocations()
+                )
+            )
+        }
+        get("/settlements") { req, res ->
+            jacksonObjectMapper().writeValueAsString(
+                    CatanPlayerSettlementPieceLocations().translateModel(board.getBoardGamePieceLocations()
                 )
             )
         }
