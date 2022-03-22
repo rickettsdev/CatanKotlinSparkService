@@ -2,7 +2,6 @@ package gameDataObjects.board
 
 import gameDataObjects.board.manager.CatanGamePieceStateManager
 import gameDataObjects.board.provider.CatanBoardDataProvider
-import gameDataObjects.board.theme.CatanThemedPrinter
 import gameDataObjects.board.ui.BoardPresenter
 import gameDataObjects.model.CatanHexagonPieceModel
 import gameDataObjects.types.*

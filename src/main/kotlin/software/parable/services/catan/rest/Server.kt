@@ -22,11 +22,11 @@ fun main(args: Array<String>) {
     val board = boardStrategy.strategyImplementation(setOf(CatanColor.BLUE, CatanColor.RED))
 
     path("/catan") {
-        get("") {req, res ->
+        get("") { req, res ->
             jacksonObjectMapper().writeValueAsString(board.getBoardGamePieceLocations())
         }
     }
-    
+
     path("/users") {
 
         get("") { req, res ->
