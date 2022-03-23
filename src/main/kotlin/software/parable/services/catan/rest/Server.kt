@@ -1,8 +1,5 @@
 package software.parable.services.catan.rest
 
-import spark.Spark.*
-import spark.Request
-
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import gameDataObjects.board.strategy.CatanBoardLayoutStrategyFirst
 import gameDataObjects.factory.CatanNumberCirclePieceFactory
@@ -10,8 +7,12 @@ import gameDataObjects.factory.CatanResourceHexagonTileFactory
 import gameDataObjects.types.*
 import software.parable.services.catan.rest.model.CatanPlayerRoadPieceLocations
 import software.parable.services.catan.rest.model.CatanPlayerSettlementPieceLocations
+import spark.Request
+import spark.Spark.*
 
 fun main(args: Array<String>) {
+
+    handleCORS()
 
     exception(Exception::class.java) { e, req, res -> e.printStackTrace() }
 
@@ -47,6 +48,10 @@ fun main(args: Array<String>) {
 
     path("/catan") {
         get("/roads") { req, res ->
+            res.type("application/json")
+            res.header("Access-Control-Max-Age", "3600")
+//            res.header("Access-Control-Allow-Origin", "*")
+            res.header("Access-Control-Allow-Methods", "GET")
             jacksonObjectMapper().writeValueAsString(
                     CatanPlayerRoadPieceLocations().translateModel(board.getBoardRoadPieceLocations()
                 )
@@ -98,6 +103,32 @@ fun main(args: Array<String>) {
 
     userDao.users.forEach(::println)
 
+}
+
+private fun handleCORS() {
+    options(
+        "/*"
+    ) { request, response ->
+        val accessControlRequestHeaders = request
+            .headers("Access-Control-Request-Headers")
+        if (accessControlRequestHeaders != null) {
+            response.header(
+                "Access-Control-Allow-Headers",
+                accessControlRequestHeaders
+            )
+        }
+        val accessControlRequestMethod = request
+            .headers("Access-Control-Request-Method")
+        if (accessControlRequestMethod != null) {
+            response.header(
+                "Access-Control-Allow-Methods",
+                accessControlRequestMethod
+            )
+        }
+        "OK"
+    }
+
+    before({ request, response -> response.header("Access-Control-Allow-Origin", "http://localhost:3000") })
 }
 
 fun Request.qp(key: String): String = this.queryParams(key) //adds .qp alias for .queryParams on Request object
