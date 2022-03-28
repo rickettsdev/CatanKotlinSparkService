@@ -79,7 +79,7 @@ fun main(args: Array<String>) {
             val x1 = request.headers("x1").toInt()
             val y1 = request.headers("y1").toInt()
             val color = CatanColor.valueOf(request.headers("color"))
-            print("Placing road at x: ${x}, y: ${y}, x1: ${x1}, y1: $y1")
+            println("Placing road at x: ${x}, y: ${y}, x1: ${x1}, y1: ${y1}, color: ${color.name}")
             board.placeRoad(
                 CatanRoadCoordinates(
                     listOf(CatanCoordinate(x,y), CatanCoordinate(x1,y1)
@@ -155,7 +155,7 @@ private fun handleCORS() {
         "OK"
     }
 
-    before({ request, response -> response.header("Access-Control-Allow-Origin", /*"http://localhost:3000"*/ "*") })
+    before({ request, response -> response.header("Access-Control-Allow-Origin", "http://localhost:3000") })
 }
 
 fun Request.qp(key: String): String = this.queryParams(key) //adds .qp alias for .queryParams on Request object
