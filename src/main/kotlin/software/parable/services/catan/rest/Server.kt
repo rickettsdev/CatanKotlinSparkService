@@ -54,24 +54,41 @@ fun main(args: Array<String>) {
     board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(1,2), CatanCoordinate(1,3))), CatanColor.BLUE)
     board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(1,3), CatanCoordinate(1,4))), CatanColor.BLUE)
     board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(1,4), CatanCoordinate(1,5))), CatanColor.BLUE)
-    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(1,5), CatanCoordinate(1,6))), CatanColor.BLUE)
+//    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(1,5), CatanCoordinate(1,6))), CatanColor.BLUE)
 
     path("/catan") {
         get("/roads") { req, res ->
-            res.type("application/json")
-            res.header("Access-Control-Max-Age", "3600")
-//            res.header("Access-Control-Allow-Origin", "*")
-            res.header("Access-Control-Allow-Methods", "GET")
             jacksonObjectMapper().writeValueAsString(
-                    CatanPlayerRoadPieceLocations().translateModel(board.getBoardRoadPieceLocations()
+                    CatanPlayerRoadPieceLocations().translateModel(
+                        board.getBoardRoadPieceLocations()
                 )
             )
         }
         get("/settlements") { req, res ->
+            print("Settlements")
             jacksonObjectMapper().writeValueAsString(
-                    CatanPlayerSettlementPieceLocations().translateModel(board.getBoardGamePieceLocations()
+                    CatanPlayerSettlementPieceLocations().translateModel(
+                        board.getBoardGamePieceLocations()
                 )
             )
+        }
+
+        post("/addRoad") {request, response ->
+            val x = request.headers("x").toInt()
+            val y = request.headers("y").toInt()
+            val x1 = request.headers("x1").toInt()
+            val y1 = request.headers("y1").toInt()
+            val color = CatanColor.valueOf(request.headers("color"))
+            print("Placing road at x: ${x}, y: ${y}, x1: ${x1}, y1: $y1")
+            board.placeRoad(
+                CatanRoadCoordinates(
+                    listOf(CatanCoordinate(x,y), CatanCoordinate(x1,y1)
+                    )
+                ),
+                color
+            )
+            response.status(200)
+            "ok"
         }
     }
 
@@ -138,7 +155,7 @@ private fun handleCORS() {
         "OK"
     }
 
-    before({ request, response -> response.header("Access-Control-Allow-Origin", "http://localhost:3000") })
+    before({ request, response -> response.header("Access-Control-Allow-Origin", /*"http://localhost:3000"*/ "*") })
 }
 
 fun Request.qp(key: String): String = this.queryParams(key) //adds .qp alias for .queryParams on Request object
