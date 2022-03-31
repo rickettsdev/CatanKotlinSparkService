@@ -98,14 +98,16 @@ class CatanSecondBoard(
     }
 
     override fun placeRoad(roadCoordinates: CatanRoadCoordinates, color: CatanColor) {
-        val emptyRoadSlot = roadPieceLocations[roadCoordinates] == CatanColor.UNASSIGNED
-        println(roadPieceLocations[roadCoordinates])
-        val isValidRoadPlacement = gamePieceStateManager.isValidRoadPlacement(roadCoordinates, color)
+        // TODO: Fix this in more perm way.
+        val sanitizedRoadCoordinates = sanitizeRoadCoordinates(roadCoordinates)
+        val emptyRoadSlot = roadPieceLocations[sanitizedRoadCoordinates] == CatanColor.UNASSIGNED
+
+        val isValidRoadPlacement = gamePieceStateManager.isValidRoadPlacement(sanitizedRoadCoordinates, color)
 
         println("Empty Road: ${emptyRoadSlot}, isValidRoadPlacement: $isValidRoadPlacement")
 
         if (emptyRoadSlot && isValidRoadPlacement)
-            roadPieceLocations[roadCoordinates] = color
+            roadPieceLocations[sanitizedRoadCoordinates] = color
         else
             throw Exception("Empty Road: ${emptyRoadSlot}, isValidRoadPlacement: $isValidRoadPlacement")
     }
@@ -142,6 +144,13 @@ class CatanSecondBoard(
 
     private fun checkRobberCoordinateInbounds(coordinate: CatanCoordinate): Boolean {
         return resourceMap.keys.contains(coordinate)
+    }
+
+    // shamefully private function that orders coordinates for road in way that map recognizes a road segment.
+    private fun sanitizeRoadCoordinates(roadCoordinates: CatanRoadCoordinates): CatanRoadCoordinates {
+        return if(roadPieceLocations[roadCoordinates] == null)
+            CatanRoadCoordinates(listOf(roadCoordinates.roadCoordinates.last(), roadCoordinates.roadCoordinates.first()))
+        else roadCoordinates
     }
 
     /**
