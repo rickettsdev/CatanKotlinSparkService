@@ -90,6 +90,15 @@ fun main(args: Array<String>) {
             response.status(200)
             "ok"
         }
+        post("/addSettlement") {request, response ->
+            val x = request.headers("x").toInt()
+            val y = request.headers("y").toInt()
+            val color = CatanColor.valueOf(request.headers("color"))
+            println("Placing settlement at x: ${x}, y: ${y}, color: ${color.name}")
+            board.placeSettlement(CatanCoordinate(x, y), CatanGamePiece(color, CatanPiece.SETTLEMENT))
+            response.status(200)
+            "ok"
+        }
     }
 
     path("/users") {
@@ -155,7 +164,7 @@ private fun handleCORS() {
         "OK"
     }
 
-    before({ request, response -> response.header("Access-Control-Allow-Origin", "http://localhost:3000") })
+    before({ request, response -> response.header("Access-Control-Allow-Origin", "*") })
 }
 
 fun Request.qp(key: String): String = this.queryParams(key) //adds .qp alias for .queryParams on Request object
