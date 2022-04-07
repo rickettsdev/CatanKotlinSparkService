@@ -164,6 +164,10 @@ class CatanSecondBoard(
         return roadPieceLocations
     }
 
+    override fun getResourceTileInfo(): MutableMap<CatanCoordinate, CatanHexagonPieceModel> {
+        return this.resourceMap
+    }
+
     override fun getBoardPlayers(): Set<CatanColor> {
         return players
     }

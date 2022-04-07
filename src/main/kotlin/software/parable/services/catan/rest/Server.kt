@@ -5,6 +5,7 @@ import gameDataObjects.board.strategy.CatanBoardLayoutStrategyFirst
 import gameDataObjects.factory.CatanNumberCirclePieceFactory
 import gameDataObjects.factory.CatanResourceHexagonTileFactory
 import gameDataObjects.types.*
+import software.parable.services.catan.rest.model.CatanPlayerResourceTileLocations
 import software.parable.services.catan.rest.model.CatanPlayerRoadPieceLocations
 import software.parable.services.catan.rest.model.CatanPlayerSettlementPieceLocations
 import spark.Request
@@ -69,6 +70,15 @@ fun main(args: Array<String>) {
             jacksonObjectMapper().writeValueAsString(
                     CatanPlayerSettlementPieceLocations().translateModel(
                         board.getBoardGamePieceLocations()
+                )
+            )
+        }
+
+        get("/resourceTiles") { req, res ->
+            print("ResourceTiles")
+            jacksonObjectMapper().writeValueAsString(
+                CatanPlayerResourceTileLocations().translateModel(
+                    board.getResourceTileInfo()
                 )
             )
         }
