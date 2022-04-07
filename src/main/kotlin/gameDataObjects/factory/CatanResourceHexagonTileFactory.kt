@@ -9,7 +9,7 @@ class CatanResourceHexagonTileFactory {
           CatanResource.WOOD, CatanResource.WOOD, CatanResource.WOOD, CatanResource.WHEAT, CatanResource.WHEAT,
                 CatanResource.WHEAT, CatanResource.WHEAT, CatanResource.SHEEP, CatanResource.SHEEP,
                     CatanResource.SHEEP, CatanResource.SHEEP, CatanResource.DESERT
-    )
+    ).shuffled().toMutableList()
 
     fun getResourceTile(): CatanResource {
         // pop!
