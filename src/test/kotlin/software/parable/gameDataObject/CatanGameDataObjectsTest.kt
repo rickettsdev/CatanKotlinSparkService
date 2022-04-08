@@ -46,7 +46,7 @@ internal class CatanGameDataObjectsTest {
         val result = board.numberRolled(2)
 
         //then
-        val expectedResult = hashMapOf(BLUE_PLAYER to mutableListOf(CatanResource.STONE))
+        val expectedResult = hashMapOf(BLUE_PLAYER to mutableListOf(CatanResource.STONE), RED_PLAYER to mutableListOf())
         assertEquals(expectedResult, result, "")
     }
     @Test

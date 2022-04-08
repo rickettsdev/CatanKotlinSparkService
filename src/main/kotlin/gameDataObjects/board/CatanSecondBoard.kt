@@ -62,6 +62,9 @@ class CatanSecondBoard(
             return hashMapOf()
         }
         var playerResources: HashMap<CatanPlayer, MutableList<CatanResource>> = hashMapOf()
+        for (player in this.players) {
+            playerResources[CatanPlayer(player)] = mutableListOf()
+        }
         for ((coordinate, model) in resourceMap) {
             if(model.diceRoll == number) {
                 val subCoordinates = hexagonSubCoordinateMap[coordinate]!!
