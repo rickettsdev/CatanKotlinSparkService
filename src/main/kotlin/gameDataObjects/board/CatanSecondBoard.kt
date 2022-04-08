@@ -21,6 +21,7 @@ class CatanSecondBoard(
 
     private var gamePieceLocations: MutableMap<CatanCoordinate, CatanGamePiece?> = mutableMapOf()
     private var roadPieceLocations: MutableMap<CatanRoadCoordinates, CatanColor?> = mutableMapOf()
+    private var playerResourceCards: HashMap<CatanColor, MutableList<CatanResource>> = hashMapOf()
     private var robberLocation: CatanCoordinate? = null
 
     private val gamePieceStateManager: CatanGamePieceStateManager
@@ -31,6 +32,10 @@ class CatanSecondBoard(
         }
         for (roadCoordinates in roadCoords) {
             roadPieceLocations[roadCoordinates] = CatanColor.UNASSIGNED
+        }
+
+        for (player in this.players) {
+            playerResourceCards[player] = mutableListOf()
         }
 
         // Place the robber piece first
@@ -75,6 +80,12 @@ class CatanSecondBoard(
                 // TODO: Check game pieces referenced from subcoordinate map.
             }
         }
+
+        for (player in this.players) {
+            val currentPlayerResources: MutableList<CatanResource> = playerResources[CatanPlayer(player)]!!
+            this.playerResourceCards[player]!!.addAll(currentPlayerResources)
+        }
+
         return playerResources
     }
 
@@ -139,6 +150,7 @@ class CatanSecondBoard(
     }
 
     override fun playerHasPortAccess(player: CatanPlayer, portResource: CatanPortType) {
+        // Batan may have no ports, or deals with a banker.
         TODO("Not yet implemented")
     }
 
@@ -166,6 +178,10 @@ class CatanSecondBoard(
 
     override fun getResourceTileInfo(): MutableMap<CatanCoordinate, CatanHexagonPieceModel> {
         return this.resourceMap
+    }
+
+    override fun getPlayerResourceCards(): HashMap<CatanColor, MutableList<CatanResource>> {
+        return this.playerResourceCards
     }
 
     override fun getBoardPlayers(): Set<CatanColor> {

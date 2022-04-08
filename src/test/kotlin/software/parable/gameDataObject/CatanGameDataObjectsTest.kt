@@ -163,6 +163,50 @@ internal class CatanGameDataObjectsTest {
     }
 
     @Test
+    fun blueSettlementRedCityRollTwice() {
+        //given
+        board.placeSettlement(
+            CatanCoordinate(1,0),
+            CatanGamePiece(CatanColor.BLUE,
+                CatanPiece.SETTLEMENT
+            )
+        )
+
+        board.placeSettlement(
+            CatanCoordinate(2,2),
+            CatanGamePiece(CatanColor.RED,
+                CatanPiece.SETTLEMENT
+            )
+        )
+
+        board.placeSettlement(
+            CatanCoordinate(2,2),
+            CatanGamePiece(CatanColor.RED,
+                CatanPiece.CITY
+            )
+        )
+
+        //when
+        val firstResult = board.numberRolled(3)
+        val secondResult = board.numberRolled(3)
+
+        //then
+        val expectedResult = hashMapOf(
+            BLUE_PLAYER to mutableListOf(CatanResource.STONE),
+            RED_PLAYER to mutableListOf(CatanResource.STONE, CatanResource.STONE, CatanResource.STONE, CatanResource.STONE)
+        )
+
+        val redTotalExpectedResult = mutableListOf(CatanResource.STONE, CatanResource.STONE, CatanResource.STONE,
+                CatanResource.STONE, CatanResource.STONE, CatanResource.STONE, CatanResource.STONE, CatanResource.STONE)
+        val blueTotalExpectedResult = mutableListOf(CatanResource.STONE, CatanResource.STONE)
+
+        assertEquals(expectedResult, firstResult, "")
+        assertEquals(expectedResult, secondResult, "")
+        assertEquals(redTotalExpectedResult, board.getPlayerResourceCards()[CatanColor.RED], "")
+        assertEquals(blueTotalExpectedResult, board.getPlayerResourceCards()[CatanColor.BLUE], "")
+    }
+
+    @Test
     fun blueSettlementRedRoadPlacement() {
         //given
         board.placeSettlement(
