@@ -23,8 +23,8 @@ fun main(args: Array<String>) {
     val userDao = UserDao()
     val boardStrategy =
         CatanBoardLayoutStrategyFirst(
-            CatanResourceHexagonTileFactory(),
-            CatanNumberCirclePieceFactory()
+            CatanResourceHexagonTileFactory(true),
+            CatanNumberCirclePieceFactory(true)
         )
     val board = boardStrategy.strategyImplementation(setOf(CatanColor.BLUE, CatanColor.RED))
 
