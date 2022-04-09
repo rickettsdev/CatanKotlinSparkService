@@ -18,13 +18,12 @@ fun main(args: Array<String>) {
     val BLUE_PLAYER = CatanPlayer(CatanColor.BLUE)
     val RED_PLAYER = CatanPlayer(CatanColor.RED)
 
-    val userDao = UserDao()
     val boardStrategy =
         CatanBoardLayoutStrategyFirst(
             CatanResourceHexagonTileFactory(false),
             CatanNumberCirclePieceFactory(false)
         )
-    val board = boardStrategy.strategyImplementation(setOf(CatanColor.BLUE, CatanColor.RED))
+    val board = boardStrategy.strategyImplementation(setOf(CatanColor.BLUE, CatanColor.RED, CatanColor.YELLOW))
 
     board.placeSettlement(
         CatanCoordinate(0,0),
@@ -116,45 +115,6 @@ fun main(args: Array<String>) {
             "ok"
         }
     }
-
-    path("/users") {
-
-        get("") { req, res ->
-            jacksonObjectMapper().writeValueAsString(userDao.users)
-        }
-
-        get("/:id") { req, res ->
-            userDao.findById(req.params("id").toInt())
-        }
-
-        get("/email/:email") { req, res ->
-            userDao.findByEmail(req.params("email"))
-        }
-
-        post("/create") { req, res ->
-            userDao.save(name = req.qp("name"), email = req.qp("email"))
-            res.status(201)
-            "ok"
-        }
-
-        patch("/update/:id") { req, res ->
-            userDao.update(
-                id = req.params("id").toInt(),
-                name = req.qp("name"),
-                email = req.qp("email")
-            )
-            "ok"
-        }
-
-        delete("/delete/:id") { req, res ->
-            userDao.delete(req.params("id").toInt())
-            "ok"
-        }
-
-    }
-
-    userDao.users.forEach(::println)
-
 }
 
 private fun handleCORS() {

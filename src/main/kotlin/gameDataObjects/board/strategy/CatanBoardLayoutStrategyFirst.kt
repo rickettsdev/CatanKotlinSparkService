@@ -105,8 +105,7 @@ class CatanBoardLayoutStrategyFirst(
 
             updateHexCoordinateViewModelMap(rootCoordinate, viewModel)
 
-            // Other five actually contains 6. Should look into that eventually lol
-            updateHexToHexCornerCoordinateMap(hexagonPiece, otherFive)
+            updateHexToHexCornerCoordinateMap(hexagonPiece, rootCoordinate, otherFive)
         }
 
         //debugging
@@ -127,9 +126,9 @@ class CatanBoardLayoutStrategyFirst(
         hexCoordinateNodeViewModelMap[rootCoordinate] = viewModel
     }
 
-    private fun updateHexToHexCornerCoordinateMap(rootCoordinate: CatanCoordinate, coordinates: List<CatanCoordinate>) {
+    private fun updateHexToHexCornerCoordinateMap(hexCoordinate: CatanCoordinate, rootCoordinate: CatanCoordinate, coordinates: List<CatanCoordinate>) {
         val coordinatesList: List<CatanCoordinate> = coordinates.plus(rootCoordinate)
-        hexagonSubCoordinateMap[rootCoordinate] = coordinatesList
+        hexagonSubCoordinateMap[hexCoordinate] = coordinatesList
     }
     //TODO: May be something wrong with this.
     private fun populateValidRoads(rootNode: CatanCoordinate) {
