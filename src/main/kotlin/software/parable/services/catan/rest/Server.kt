@@ -30,49 +30,20 @@ fun main(args: Array<String>) {
     val board = boardStrategy.strategyImplementation(setOf(CatanColor.BLUE, CatanColor.RED))
 
     board.placeSettlement(
-        CatanCoordinate(1,0),
+        CatanCoordinate(0,0),
         CatanGamePiece(CatanColor.BLUE,
             CatanPiece.SETTLEMENT
         )
     )
 
     board.placeSettlement(
-        CatanCoordinate(2,2),
+        CatanCoordinate(1,3),
         CatanGamePiece(CatanColor.RED,
             CatanPiece.SETTLEMENT
         )
     )
-//    board.placeSettlement(
-//        CatanCoordinate(1,0),
-//        CatanGamePiece(CatanColor.BLUE,
-//            CatanPiece.SETTLEMENT
-//        )
-//    )
-//
-//    board.placeSettlement(
-//        CatanCoordinate(2,2),
-//        CatanGamePiece(CatanColor.RED,
-//            CatanPiece.SETTLEMENT
-//        )
-//    )
-//
-//    //Red roads
-//    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(2,2), CatanCoordinate(3,3))), CatanColor.RED)
-//    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(3,3), CatanCoordinate(3,4))), CatanColor.RED)
-//    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(2,2), CatanCoordinate(2,3))), CatanColor.RED)
-//    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(2,3), CatanCoordinate(2,4))), CatanColor.RED)
-//    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(2,4), CatanCoordinate(3,5))), CatanColor.RED)
-//
-//    //Blue roads
-//    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(1,0), CatanCoordinate(1,1))), CatanColor.BLUE)
-//    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(1,1), CatanCoordinate(1,2))), CatanColor.BLUE)
-//    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(1,2), CatanCoordinate(1,3))), CatanColor.BLUE)
-//    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(1,3), CatanCoordinate(1,4))), CatanColor.BLUE)
-//    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(1,4), CatanCoordinate(1,5))), CatanColor.BLUE)
-////    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(1,5), CatanCoordinate(1,6))), CatanColor.BLUE)
 
-    board.numberRolled(3)
-
+    board.numberRolled(4)
 
     path("/catan") {
         get("/roads") { req, res ->

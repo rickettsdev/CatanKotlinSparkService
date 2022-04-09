@@ -105,7 +105,8 @@ class CatanBoardLayoutStrategyFirst(
 
             updateHexCoordinateViewModelMap(rootCoordinate, viewModel)
 
-            updateHexToHexCornerCoordinateMap(rootCoordinate, otherFive)
+            // Other five actually contains 6. Should look into that eventually lol
+            updateHexToHexCornerCoordinateMap(hexagonPiece, otherFive)
         }
 
         //debugging

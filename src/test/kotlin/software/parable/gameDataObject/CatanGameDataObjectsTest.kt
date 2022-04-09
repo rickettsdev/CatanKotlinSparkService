@@ -100,6 +100,34 @@ internal class CatanGameDataObjectsTest {
     }
 
     @Test
+    fun noBlueResourcesRoll() {
+        //given
+        board.placeSettlement(
+            CatanCoordinate(0,0),
+            CatanGamePiece(CatanColor.BLUE,
+                CatanPiece.SETTLEMENT
+            )
+        )
+
+        board.placeSettlement(
+            CatanCoordinate(1,3),
+            CatanGamePiece(CatanColor.RED,
+                CatanPiece.SETTLEMENT
+            )
+        )
+
+        //when
+        val result = board.numberRolled(4)
+
+        //then
+        val expectedResult = hashMapOf(
+            BLUE_PLAYER to mutableListOf(),
+        RED_PLAYER to mutableListOf(CatanResource.BRICK, CatanResource.BRICK)
+        )
+        assertEquals(expectedResult, result, "")
+    }
+
+    @Test
     fun sharedResourceRollRedGetsExtra() {
         //given
         board.placeSettlement(
