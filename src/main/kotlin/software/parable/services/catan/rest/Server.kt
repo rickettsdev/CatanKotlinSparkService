@@ -5,10 +5,7 @@ import gameDataObjects.board.strategy.CatanBoardLayoutStrategyFirst
 import gameDataObjects.factory.CatanNumberCirclePieceFactory
 import gameDataObjects.factory.CatanResourceHexagonTileFactory
 import gameDataObjects.types.*
-import software.parable.services.catan.rest.model.CatanPlayerResourceCardsResponse
-import software.parable.services.catan.rest.model.CatanPlayerResourceTileLocations
-import software.parable.services.catan.rest.model.CatanPlayerRoadPieceLocations
-import software.parable.services.catan.rest.model.CatanPlayerSettlementPieceLocations
+import software.parable.services.catan.rest.model.*
 import spark.Request
 import spark.Spark.*
 
@@ -47,6 +44,7 @@ fun main(args: Array<String>) {
 
     path("/catan") {
         get("/roads") { req, res ->
+            println("Roads")
             jacksonObjectMapper().writeValueAsString(
                     CatanPlayerRoadPieceLocations().translateModel(
                         board.getBoardRoadPieceLocations()
@@ -54,7 +52,7 @@ fun main(args: Array<String>) {
             )
         }
         get("/settlements") { req, res ->
-            print("Settlements")
+            println("Settlements")
             jacksonObjectMapper().writeValueAsString(
                     CatanPlayerSettlementPieceLocations().translateModel(
                         board.getBoardGamePieceLocations()
@@ -63,7 +61,7 @@ fun main(args: Array<String>) {
         }
 
         get("/resourceTiles") { req, res ->
-            print("ResourceTiles")
+            println("ResourceTiles")
             jacksonObjectMapper().writeValueAsString(
                 CatanPlayerResourceTileLocations().translateModel(
                     board.getResourceTileInfo()
@@ -72,7 +70,7 @@ fun main(args: Array<String>) {
         }
 
         get("/playerResources") { req, res ->
-            print("Player Resources")
+            println("Player Resources")
             jacksonObjectMapper().writeValueAsString(
                 CatanPlayerResourceCardsResponse().translateModel(
                     board.getPlayerResourceCards()
@@ -80,6 +78,16 @@ fun main(args: Array<String>) {
             )
         }
 
+        get("/rollDice") { req, res ->
+            println("RollingDice")
+            val diceRoll = (2..12).random()
+            board.numberRolled(diceRoll)
+            jacksonObjectMapper().writeValueAsString(
+                CatanDiceRollResponse().translateModel(
+                    diceRoll
+                )
+            )
+        }
 
         post("/addRoad") {request, response ->
             val x = request.headers("x").toInt()
