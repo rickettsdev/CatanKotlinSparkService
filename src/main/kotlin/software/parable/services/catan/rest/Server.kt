@@ -5,6 +5,7 @@ import gameDataObjects.board.strategy.CatanBoardLayoutStrategyFirst
 import gameDataObjects.factory.CatanNumberCirclePieceFactory
 import gameDataObjects.factory.CatanResourceHexagonTileFactory
 import gameDataObjects.types.*
+import software.parable.services.catan.rest.model.CatanPlayerResourceCardsResponse
 import software.parable.services.catan.rest.model.CatanPlayerResourceTileLocations
 import software.parable.services.catan.rest.model.CatanPlayerRoadPieceLocations
 import software.parable.services.catan.rest.model.CatanPlayerSettlementPieceLocations
@@ -23,8 +24,8 @@ fun main(args: Array<String>) {
     val userDao = UserDao()
     val boardStrategy =
         CatanBoardLayoutStrategyFirst(
-            CatanResourceHexagonTileFactory(true),
-            CatanNumberCirclePieceFactory(true)
+            CatanResourceHexagonTileFactory(false),
+            CatanNumberCirclePieceFactory(false)
         )
     val board = boardStrategy.strategyImplementation(setOf(CatanColor.BLUE, CatanColor.RED))
 
@@ -41,21 +42,37 @@ fun main(args: Array<String>) {
             CatanPiece.SETTLEMENT
         )
     )
+//    board.placeSettlement(
+//        CatanCoordinate(1,0),
+//        CatanGamePiece(CatanColor.BLUE,
+//            CatanPiece.SETTLEMENT
+//        )
+//    )
+//
+//    board.placeSettlement(
+//        CatanCoordinate(2,2),
+//        CatanGamePiece(CatanColor.RED,
+//            CatanPiece.SETTLEMENT
+//        )
+//    )
+//
+//    //Red roads
+//    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(2,2), CatanCoordinate(3,3))), CatanColor.RED)
+//    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(3,3), CatanCoordinate(3,4))), CatanColor.RED)
+//    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(2,2), CatanCoordinate(2,3))), CatanColor.RED)
+//    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(2,3), CatanCoordinate(2,4))), CatanColor.RED)
+//    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(2,4), CatanCoordinate(3,5))), CatanColor.RED)
+//
+//    //Blue roads
+//    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(1,0), CatanCoordinate(1,1))), CatanColor.BLUE)
+//    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(1,1), CatanCoordinate(1,2))), CatanColor.BLUE)
+//    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(1,2), CatanCoordinate(1,3))), CatanColor.BLUE)
+//    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(1,3), CatanCoordinate(1,4))), CatanColor.BLUE)
+//    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(1,4), CatanCoordinate(1,5))), CatanColor.BLUE)
+////    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(1,5), CatanCoordinate(1,6))), CatanColor.BLUE)
 
-    //Red roads
-    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(2,2), CatanCoordinate(3,3))), CatanColor.RED)
-    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(3,3), CatanCoordinate(3,4))), CatanColor.RED)
-    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(2,2), CatanCoordinate(2,3))), CatanColor.RED)
-    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(2,3), CatanCoordinate(2,4))), CatanColor.RED)
-    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(2,4), CatanCoordinate(3,5))), CatanColor.RED)
+    board.numberRolled(3)
 
-    //Blue roads
-    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(1,0), CatanCoordinate(1,1))), CatanColor.BLUE)
-    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(1,1), CatanCoordinate(1,2))), CatanColor.BLUE)
-    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(1,2), CatanCoordinate(1,3))), CatanColor.BLUE)
-    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(1,3), CatanCoordinate(1,4))), CatanColor.BLUE)
-    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(1,4), CatanCoordinate(1,5))), CatanColor.BLUE)
-//    board.placeRoad(CatanRoadCoordinates(listOf(CatanCoordinate(1,5), CatanCoordinate(1,6))), CatanColor.BLUE)
 
     path("/catan") {
         get("/roads") { req, res ->
@@ -82,6 +99,16 @@ fun main(args: Array<String>) {
                 )
             )
         }
+
+        get("/playerResources") { req, res ->
+            print("Player Resources")
+            jacksonObjectMapper().writeValueAsString(
+                CatanPlayerResourceCardsResponse().translateModel(
+                    board.getPlayerResourceCards()
+                )
+            )
+        }
+
 
         post("/addRoad") {request, response ->
             val x = request.headers("x").toInt()

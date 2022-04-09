@@ -1,6 +1,7 @@
 package software.parable.services.catan.rest.model
 
 import gameDataObjects.model.CatanHexagonPieceModel
+import gameDataObjects.types.CatanColor
 import gameDataObjects.types.CatanCoordinate
 
 typealias ResourceTileLocationModel = HashMap<String, String>
