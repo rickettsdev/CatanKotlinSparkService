@@ -39,8 +39,6 @@ fun main(args: Array<String>) {
         )
     )
 
-    board.numberRolled(4)
-
     path("/catan") {
         get("/roads") { req, res ->
             println("Roads")
