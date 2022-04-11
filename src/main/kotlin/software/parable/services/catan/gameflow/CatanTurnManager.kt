@@ -52,6 +52,7 @@ object CatanTurnManager {
 
         if (reverseSection) {
             // This is added to include the unique ordering of player piece placements for the first 8 turns.
+            // TODO: Fix: Only works for 4 players.
             val index = when (this.currentPlayerIndex) {
                 4 -> 3
                 5 -> 2

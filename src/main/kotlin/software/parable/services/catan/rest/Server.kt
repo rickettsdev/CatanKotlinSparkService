@@ -5,6 +5,7 @@ import gameDataObjects.board.strategy.CatanBoardLayoutStrategyFirst
 import gameDataObjects.factory.CatanNumberCirclePieceFactory
 import gameDataObjects.factory.CatanResourceHexagonTileFactory
 import gameDataObjects.types.*
+import software.parable.services.catan.gameflow.CatanTurnManager
 import software.parable.services.catan.rest.model.*
 import spark.Request
 import spark.Spark.*
@@ -23,7 +24,9 @@ fun main(args: Array<String>) {
             CatanResourceHexagonTileFactory(false),
             CatanNumberCirclePieceFactory(false)
         )
-    val board = boardStrategy.strategyImplementation(setOf(CatanColor.BLUE, CatanColor.RED, CatanColor.YELLOW))
+    val turnManager = CatanTurnManager
+    val playerOrdering = setOf(CatanColor.RED, CatanColor.BLUE, CatanColor.YELLOW)
+    val board = boardStrategy.strategyImplementation(playerOrdering)
 
     board.placeSettlement(
         CatanCoordinate(0,0),
@@ -109,6 +112,21 @@ fun main(args: Array<String>) {
             val color = CatanColor.valueOf(request.headers("color"))
             println("Placing settlement at x: ${x}, y: ${y}, color: ${color.name}")
             board.placeSettlement(CatanCoordinate(x, y), CatanGamePiece(color, CatanPiece.SETTLEMENT))
+            response.status(200)
+            "ok"
+        }
+        post("/resetTurnManager") {request, response ->
+            turnManager.startGame(playerOrdering)
+            response.status(200)
+            "ok"
+        }
+
+        post("/endTurn") {request, response ->
+            val color = CatanColor.valueOf(request.headers("color"))
+            if (color != turnManager.turnState.playerTurn) {
+                throw Exception("Not your turn.")
+            }
+            turnManager.endTurn()
             response.status(200)
             "ok"
         }
