@@ -1,27 +1,20 @@
 package software.parable.services.catan.gameflow
 
 import gameDataObjects.types.CatanColor
+import software.parable.services.catan.gameflow.model.CatanBoardTurnState
+import software.parable.services.catan.gameflow.model.CatanTurnStatus
 
 object CatanTurnManager {
-    private data class CatanBoardTurnState(
-        var status: CatanTurnStatus,
-        var playerTurn: CatanColor,
-        var roadsPlaced: Int,
-        var settlementsPlaced: Int,
-        var diceRollsSoFar: Int
-        )
-    private enum class CatanTurnStatus {
-        INITIAL_PLACEMENT_FIRST,
-        INITIAL_PLACEMENT_SECOND,
-        PLACE_ROBBER,
-        OVER_7_DISCARD,
-        PLAYER_VICTORY
-    }
 
-    private val defaultState = CatanBoardTurnState(CatanTurnStatus.INITIAL_PLACEMENT_FIRST, CatanColor.UNASSIGNED, 0, 0, 0)
+    private val defaultState = CatanBoardTurnState(
+        CatanTurnStatus.INITIAL_PLACEMENT_FIRST,
+        CatanColor.UNASSIGNED,
+        0, 0, 0)
     private val playerOrdering = mutableSetOf<CatanColor>()
+    private var currentPlayerIndex = 0
 
-    private var turnState: CatanBoardTurnState = defaultState
+    var turnState: CatanBoardTurnState = defaultState
+
     fun startGame(playerOrdering: Set<CatanColor>) {
         this.resetTurnState(playerOrdering)
     }
@@ -47,12 +40,13 @@ object CatanTurnManager {
         this.turnState = defaultState
         this.playerOrdering.clear()
         this.playerOrdering.addAll(playerOrdering)
+        this.currentPlayerIndex = 0
         this.turnState.playerTurn = this.playerOrdering.first()
     }
 
     // Need to handle initial player piece placement
     private fun nextPlayer(): CatanColor {
-        return CatanColor.RED
+        return this.playerOrdering.elementAt(((++this.currentPlayerIndex) % this.playerOrdering.size))
     }
 
     // Need to handle initial player piece placement
