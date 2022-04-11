@@ -25,7 +25,7 @@ internal class CatanTurnManagerTest {
         //when
         turnManager.endTurn()
         //then
-        assertEquals(turnManager.turnState.playerTurn, CatanColor.BLUE)
+        assertEquals(CatanColor.BLUE, turnManager.turnState.playerTurn)
     }
 
     @Test
@@ -36,7 +36,7 @@ internal class CatanTurnManagerTest {
             turnManager.endTurn()
         }
         //then
-        assertEquals(turnManager.turnState.playerTurn, CatanColor.WHITE)
+        assertEquals(CatanColor.WHITE, turnManager.turnState.playerTurn)
     }
     @Test
     fun endTurn4TimesCorrectIndexes() {
@@ -46,10 +46,9 @@ internal class CatanTurnManagerTest {
             turnManager.endTurn()
         }
         //then
-        assertEquals(turnManager.turnState.playerTurn, CatanColor.RED)
+        assertEquals(CatanColor.WHITE, turnManager.turnState.playerTurn)
     }
 
-    //
     @Test
     fun endTurn7TimesCorrectIndexes() {
         //given
@@ -58,6 +57,40 @@ internal class CatanTurnManagerTest {
             turnManager.endTurn()
         }
         //then
-        assertEquals(turnManager.turnState.playerTurn, CatanColor.WHITE)
+        assertEquals(CatanColor.RED, turnManager.turnState.playerTurn)
+    }
+
+    //
+    @Test
+    fun endTurn8TimesCorrectIndexes() {
+        //given
+        //when
+        for (i in 0..7) {
+            turnManager.endTurn()
+        }
+        //then
+        assertEquals(CatanColor.RED, turnManager.turnState.playerTurn)
+    }
+
+    @Test
+    fun endTurn9TimesCorrectIndexes() {
+        //given
+        //when
+        for (i in 0..8) {
+            turnManager.endTurn()
+        }
+        //then
+        assertEquals(CatanColor.BLUE, turnManager.turnState.playerTurn)
+    }
+
+    @Test
+    fun endTurn12TimesCorrectIndexes() {
+        //given
+        //when
+        for (i in 0..11) {
+            turnManager.endTurn()
+        }
+        //then
+        assertEquals(CatanColor.RED, turnManager.turnState.playerTurn)
     }
 }

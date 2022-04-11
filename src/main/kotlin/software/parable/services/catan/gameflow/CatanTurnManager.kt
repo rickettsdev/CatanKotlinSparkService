@@ -19,6 +19,7 @@ object CatanTurnManager {
         this.resetTurnState(playerOrdering)
     }
 
+    // TODO: Consider adding check whether player placed 2 road and 1 settlement during initial piece placement
     fun endTurn() {
         this.turnState.playerTurn = nextPlayer()
         this.turnState.status = evaluateStatus()
@@ -46,11 +47,29 @@ object CatanTurnManager {
 
     // Need to handle initial player piece placement
     private fun nextPlayer(): CatanColor {
-        return this.playerOrdering.elementAt(((++this.currentPlayerIndex) % this.playerOrdering.size))
+        this.currentPlayerIndex++
+        val reverseSection = ((this.playerOrdering.size)until this.playerOrdering.size*2).contains(this.currentPlayerIndex)
+
+        if (reverseSection) {
+            // This is added to include the unique ordering of player piece placements for the first 8 turns.
+            val index = when (this.currentPlayerIndex) {
+                4 -> 3
+                5 -> 2
+                6 -> 1
+                7 -> 0
+                else -> throw Exception("Invalid")
+            }
+            return this.playerOrdering.elementAt(index)
+        }
+        return this.playerOrdering.elementAt(((this.currentPlayerIndex) % this.playerOrdering.size))
     }
 
-    // Need to handle initial player piece placement
+    // Need to handle victory conditions
     private fun evaluateStatus(): CatanTurnStatus {
-        return CatanTurnStatus.INITIAL_PLACEMENT_FIRST
+        return when(this.currentPlayerIndex) {
+            0, 1, 2, 3 -> CatanTurnStatus.INITIAL_PLACEMENT_FIRST
+            4, 5, 6, 7 -> CatanTurnStatus.INITIAL_PLACEMENT_SECOND
+            else -> CatanTurnStatus.PLAYER_TURN_IN_PROGRESS
+        }
     }
 }
