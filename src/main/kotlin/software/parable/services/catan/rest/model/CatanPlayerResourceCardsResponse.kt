@@ -5,11 +5,16 @@ import gameDataObjects.types.CatanResource
 
 class CatanPlayerResourceCardsResponse: CatanJacksonModelResponse<HashMap<CatanColor, MutableList<CatanResource>>, String, List<String>>() {
     override fun createJacksonFriendlyModel(model: HashMap<CatanColor, MutableList<CatanResource>>): HashMap<String, List<String>> {
+        val redModelList = model[CatanColor.RED]?.map { catanResource -> catanResource.toString() } ?: listOf()
+        val blueModelList = model[CatanColor.BLUE]?.map { catanResource -> catanResource.toString() } ?: listOf()
+        val yellowModelList =  model[CatanColor.YELLOW]?.map { catanResource -> catanResource.toString() } ?: listOf()
+        val whiteModelList = model[CatanColor.WHITE]?.map { catanResource -> catanResource.toString() } ?: listOf()
+
         return hashMapOf(
-            "red" to model[CatanColor.RED]!!.map { catanResource -> catanResource.toString() },
-            "blue" to model[CatanColor.BLUE]!!.map { catanResource -> catanResource.toString() },
-//            "yellow" to model[CatanColor.YELLOW]!!.map { catanResource -> catanResource.toString() },
-//            "white" to model[CatanColor.WHITE]!!.map { catanResource -> catanResource.toString() },
+            "red" to redModelList,
+            "blue" to blueModelList,
+            "yellow" to yellowModelList,
+            "white" to whiteModelList
         )
     }
 }

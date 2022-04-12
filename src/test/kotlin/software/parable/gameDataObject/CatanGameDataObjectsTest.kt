@@ -13,6 +13,8 @@ internal class CatanGameDataObjectsTest {
     companion object {
         val BLUE_PLAYER = CatanPlayer(CatanColor.BLUE)
         val RED_PLAYER = CatanPlayer(CatanColor.RED)
+        val YELLOW_PLAYER = CatanPlayer(CatanColor.YELLOW)
+        val WHITE_PLAYER = CatanPlayer(CatanColor.WHITE)
     }
 
     var boardStrategy =
@@ -20,7 +22,7 @@ internal class CatanGameDataObjectsTest {
             CatanResourceHexagonTileFactory(),
             CatanNumberCirclePieceFactory()
         )
-    var board = boardStrategy.strategyImplementation(setOf(CatanColor.BLUE, CatanColor.RED))
+    var board = boardStrategy.strategyImplementation(setOf(CatanColor.BLUE, CatanColor.RED, CatanColor.YELLOW, CatanColor.WHITE))
 
     @AfterTest
     fun afterTest() {
@@ -46,7 +48,12 @@ internal class CatanGameDataObjectsTest {
         val result = board.numberRolled(2)
 
         //then
-        val expectedResult = hashMapOf(BLUE_PLAYER to mutableListOf(CatanResource.STONE), RED_PLAYER to mutableListOf())
+        val expectedResult = hashMapOf(
+            BLUE_PLAYER to mutableListOf(CatanResource.STONE),
+            RED_PLAYER to mutableListOf(),
+            YELLOW_PLAYER to mutableListOf(),
+            WHITE_PLAYER to mutableListOf()
+        )
         assertEquals(expectedResult, result, "")
     }
     @Test
@@ -94,7 +101,9 @@ internal class CatanGameDataObjectsTest {
         //then
         val expectedResult = hashMapOf(
             BLUE_PLAYER to mutableListOf(CatanResource.STONE),
-            RED_PLAYER to mutableListOf(CatanResource.STONE)
+            RED_PLAYER to mutableListOf(CatanResource.STONE),
+            YELLOW_PLAYER to mutableListOf(),
+            WHITE_PLAYER to mutableListOf()
         )
         assertEquals(expectedResult, result, "")
     }
@@ -122,7 +131,9 @@ internal class CatanGameDataObjectsTest {
         //then
         val expectedResult = hashMapOf(
             BLUE_PLAYER to mutableListOf(),
-        RED_PLAYER to mutableListOf(CatanResource.BRICK, CatanResource.BRICK)
+            RED_PLAYER to mutableListOf(CatanResource.BRICK, CatanResource.BRICK),
+            YELLOW_PLAYER to mutableListOf(),
+            WHITE_PLAYER to mutableListOf()
         )
         assertEquals(expectedResult, result, "")
     }
@@ -150,7 +161,9 @@ internal class CatanGameDataObjectsTest {
         //then
         val expectedResult = hashMapOf<CatanPlayer, MutableList<CatanResource>>(
             BLUE_PLAYER to mutableListOf(),
-            RED_PLAYER to mutableListOf()
+            RED_PLAYER to mutableListOf(),
+            YELLOW_PLAYER to mutableListOf(),
+            WHITE_PLAYER to mutableListOf()
         )
         assertEquals(expectedResult, result, "")
     }
@@ -178,7 +191,9 @@ internal class CatanGameDataObjectsTest {
         //then
         val expectedResult = hashMapOf(
             BLUE_PLAYER to mutableListOf(CatanResource.STONE),
-            RED_PLAYER to mutableListOf(CatanResource.STONE, CatanResource.STONE)
+            RED_PLAYER to mutableListOf(CatanResource.STONE, CatanResource.STONE),
+            YELLOW_PLAYER to mutableListOf(),
+            WHITE_PLAYER to mutableListOf()
         )
         assertEquals(expectedResult, result, "")
     }
@@ -213,7 +228,9 @@ internal class CatanGameDataObjectsTest {
         //then
         val expectedResult = hashMapOf(
             BLUE_PLAYER to mutableListOf(CatanResource.STONE),
-            RED_PLAYER to mutableListOf(CatanResource.STONE, CatanResource.STONE, CatanResource.STONE, CatanResource.STONE)
+            RED_PLAYER to mutableListOf(CatanResource.STONE, CatanResource.STONE, CatanResource.STONE, CatanResource.STONE),
+            YELLOW_PLAYER to mutableListOf(),
+            WHITE_PLAYER to mutableListOf()
         )
         assertEquals(expectedResult, result, "")
     }
@@ -249,7 +266,9 @@ internal class CatanGameDataObjectsTest {
         //then
         val expectedResult = hashMapOf(
             BLUE_PLAYER to mutableListOf(CatanResource.STONE),
-            RED_PLAYER to mutableListOf(CatanResource.STONE, CatanResource.STONE, CatanResource.STONE, CatanResource.STONE)
+            RED_PLAYER to mutableListOf(CatanResource.STONE, CatanResource.STONE, CatanResource.STONE, CatanResource.STONE),
+            YELLOW_PLAYER to mutableListOf(),
+            WHITE_PLAYER to mutableListOf()
         )
 
         val redTotalExpectedResult = mutableListOf(CatanResource.STONE, CatanResource.STONE, CatanResource.STONE,
