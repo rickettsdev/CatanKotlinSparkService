@@ -28,6 +28,7 @@ fun main(args: Array<String>) {
     val playerOrdering = setOf(CatanColor.RED, CatanColor.BLUE, CatanColor.YELLOW)
     val board = boardStrategy.strategyImplementation(playerOrdering)
 
+    turnManager.startGame(playerOrdering)
     path("/catan") {
 
         get("/status") { req, res ->
