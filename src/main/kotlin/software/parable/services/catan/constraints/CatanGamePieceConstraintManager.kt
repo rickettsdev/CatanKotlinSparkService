@@ -9,9 +9,15 @@ object CatanGamePieceConstraintManager {
 
     var resourceCardsAvailable = CatanResourceDeckState()
     var playerPieceState = mutableMapOf<CatanColor, CatanPlayerGamePieceState>()
+    var mostRecentPlayersSaved = setOf<CatanColor>()
 
-    fun resetResourceCardDeck() {
-        this.resourceCardsAvailable = CatanResourceDeckState()
+    fun resetItAll(forPlayers: Set<CatanColor> = mostRecentPlayersSaved, maxResourceCount: Int = 19) {
+        resetResourceCardDeck(maxResourceCount)
+        redistributePlayerGamePieces(forPlayers)
+    }
+
+    fun resetResourceCardDeck(maxResourceCount: Int = 19) {
+        this.resourceCardsAvailable = CatanResourceDeckState(maxResourceCount)
     }
 
     fun redistributePlayerGamePieces(forPlayers: Set<CatanColor>) {
@@ -19,6 +25,7 @@ object CatanGamePieceConstraintManager {
         for (player in forPlayers) {
             playerPieceState[player] = CatanPlayerGamePieceState()
         }
+        mostRecentPlayersSaved = forPlayers
     }
 
     fun playerReceivedTheseCards(resourceCards: List<CatanResource>) {
@@ -27,14 +34,16 @@ object CatanGamePieceConstraintManager {
         }
     }
 
-    fun playerBuiltSettlement() {
+    fun playerBuiltSettlement(color: CatanColor) {
+        if(playerPieceState[color]!!.settlementPieceCount < 1) throw Exception("Not enough settlements M'Lord.")
         addCard(CatanResource.WHEAT)
         addCard(CatanResource.WOOD)
         addCard(CatanResource.BRICK)
         addCard(CatanResource.SHEEP)
     }
 
-    fun playerBuildCity() {
+    fun playerBuildCity(color: CatanColor) {
+        if(playerPieceState[color]!!.cityPieceCount < 1) throw Exception("Not enough cities M'Lord.")
         addCard(CatanResource.WHEAT)
         addCard(CatanResource.WHEAT)
         addCard(CatanResource.WHEAT)
@@ -42,7 +51,8 @@ object CatanGamePieceConstraintManager {
         addCard(CatanResource.STONE)
     }
 
-    fun playerBuildRoad() {
+    fun playerBuildRoad(color: CatanColor) {
+        if(playerPieceState[color]!!.roadPieceCount < 1) throw Exception("Not enough roads M'Lord.")
         addCard(CatanResource.BRICK)
         addCard(CatanResource.WOOD)
     }
