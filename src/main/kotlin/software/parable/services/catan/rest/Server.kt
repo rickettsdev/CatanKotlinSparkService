@@ -29,6 +29,16 @@ fun main(args: Array<String>) {
     val board = boardStrategy.strategyImplementation(playerOrdering)
 
     path("/catan") {
+
+        get("/status") { req, res ->
+            println("Status")
+            jacksonObjectMapper().writeValueAsString(
+                CatanSessionStatusResponse().translateModel(
+                    turnManager.turnState
+                )
+            )
+        }
+
         get("/roads") { req, res ->
             println("Roads")
             jacksonObjectMapper().writeValueAsString(
@@ -68,6 +78,7 @@ fun main(args: Array<String>) {
             println("RollingDice")
             val diceRoll = (2..12).random()
             val resourceAllocations = board.numberRolled(diceRoll)
+            turnManager.incrementDiceRollsSoFar()
 
             // TODO: handle tallying up used resources.
 
@@ -92,6 +103,7 @@ fun main(args: Array<String>) {
                 ),
                 color
             )
+            turnManager.incrementRoad()
             response.status(200)
             "ok"
         }
@@ -101,6 +113,7 @@ fun main(args: Array<String>) {
             val color = CatanColor.valueOf(request.headers("color"))
             println("Placing settlement at x: ${x}, y: ${y}, color: ${color.name}")
             board.placeSettlement(CatanCoordinate(x, y), CatanGamePiece(color, CatanPiece.SETTLEMENT))
+            turnManager.incrementSettlement()
             response.status(200)
             "ok"
         }
