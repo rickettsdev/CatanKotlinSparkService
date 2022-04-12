@@ -51,26 +51,26 @@ object CatanTurnManager {
         val reverseSection = ((this.playerOrdering.size)until this.playerOrdering.size*2).contains(this.currentPlayerIndex)
 
         if (reverseSection) {
-            // This is added to include the unique ordering of player piece placements for the first 8 turns.
-            // TODO: Fix: Only works for 4 players.
-            val index = when (this.currentPlayerIndex) {
-                4 -> 3
-                5 -> 2
-                6 -> 1
-                7 -> 0
-                else -> throw Exception("Invalid")
-            }
+            // This is added to include the unique ordering of player piece
+            // placements for the first 2 turns per player
+            val index = nextPlayerIndexReverseSection()
             return this.playerOrdering.elementAt(index)
         }
         return this.playerOrdering.elementAt(((this.currentPlayerIndex) % this.playerOrdering.size))
     }
 
+    private fun nextPlayerIndexReverseSection(): Int {
+        val numOfPlayers = this.playerOrdering.size
+        val subtractor = 1 + ((this.currentPlayerIndex - numOfPlayers)*2)
+        return this.currentPlayerIndex - subtractor
+    }
+
     // Need to handle victory conditions
     private fun evaluateStatus(): CatanTurnStatus {
-        return when(this.currentPlayerIndex) {
-            0, 1, 2, 3 -> CatanTurnStatus.INITIAL_PLACEMENT_FIRST
-            4, 5, 6, 7 -> CatanTurnStatus.INITIAL_PLACEMENT_SECOND
-            else -> CatanTurnStatus.PLAYER_TURN_IN_PROGRESS
-        }
+        return if (this.currentPlayerIndex >= playerOrdering.size)
+            CatanTurnStatus.INITIAL_PLACEMENT_FIRST
+        else if (this.currentPlayerIndex < playerOrdering.size && this.currentPlayerIndex > playerOrdering.size * 2)
+            CatanTurnStatus.INITIAL_PLACEMENT_SECOND
+        else CatanTurnStatus.PLAYER_TURN_IN_PROGRESS
     }
 }

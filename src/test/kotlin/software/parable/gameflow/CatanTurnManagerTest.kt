@@ -93,4 +93,42 @@ internal class CatanTurnManagerTest {
         //then
         assertEquals(CatanColor.RED, turnManager.turnState.playerTurn)
     }
+
+    // 3 Players tests
+
+    @Test
+    fun endTurn3TimesCorrectIndexes3Players() {
+        //given
+        turnManager.startGame(setOf(CatanColor.RED, CatanColor.BLUE, CatanColor.YELLOW))
+        //when
+        for (i in 0..2) {
+            turnManager.endTurn()
+        }
+        //then
+        assertEquals(CatanColor.YELLOW, turnManager.turnState.playerTurn)
+    }
+
+    @Test
+    fun endTurn4TimesCorrectIndexes3Players() {
+        //given
+        turnManager.startGame(setOf(CatanColor.RED, CatanColor.BLUE, CatanColor.YELLOW))
+        //when
+        for (i in 0..3) {
+            turnManager.endTurn()
+        }
+        //then
+        assertEquals(CatanColor.BLUE, turnManager.turnState.playerTurn)
+    }
+
+    @Test
+    fun endTurn6TimesCorrectIndexes3Players() {
+        //given
+        turnManager.startGame(setOf(CatanColor.RED, CatanColor.BLUE, CatanColor.YELLOW))
+        //when
+        for (i in 0..5) {
+            turnManager.endTurn()
+        }
+        //then
+        assertEquals(CatanColor.RED, turnManager.turnState.playerTurn)
+    }
 }
