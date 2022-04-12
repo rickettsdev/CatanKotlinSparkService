@@ -28,20 +28,6 @@ fun main(args: Array<String>) {
     val playerOrdering = setOf(CatanColor.RED, CatanColor.BLUE, CatanColor.YELLOW)
     val board = boardStrategy.strategyImplementation(playerOrdering)
 
-    board.placeSettlement(
-        CatanCoordinate(0,0),
-        CatanGamePiece(CatanColor.BLUE,
-            CatanPiece.SETTLEMENT
-        )
-    )
-
-    board.placeSettlement(
-        CatanCoordinate(1,3),
-        CatanGamePiece(CatanColor.RED,
-            CatanPiece.SETTLEMENT
-        )
-    )
-
     path("/catan") {
         get("/roads") { req, res ->
             println("Roads")
@@ -81,7 +67,10 @@ fun main(args: Array<String>) {
         get("/rollDice") { req, res ->
             println("RollingDice")
             val diceRoll = (2..12).random()
-            board.numberRolled(diceRoll)
+            val resourceAllocations = board.numberRolled(diceRoll)
+
+            // TODO: handle tallying up used resources.
+
             jacksonObjectMapper().writeValueAsString(
                 CatanDiceRollResponse().translateModel(
                     diceRoll

@@ -6,6 +6,7 @@ import gameDataObjects.board.ui.BoardPresenter
 import gameDataObjects.model.CatanHexagonPieceModel
 import gameDataObjects.types.*
 import gameDataObjects.viewmodel.CatanHexCornerNodeViewModel
+import software.parable.services.catan.constraints.CatanGamePieceConstraintManager
 import java.lang.Exception
 
 class CatanSecondBoard(
@@ -25,6 +26,8 @@ class CatanSecondBoard(
     private var robberLocation: CatanCoordinate? = null
 
     private val gamePieceStateManager: CatanGamePieceStateManager
+
+    private val constraintManager = CatanGamePieceConstraintManager
 
     init {
         for (subCoordinate in hexPoints) {
@@ -50,6 +53,7 @@ class CatanSecondBoard(
             throw Exception("Robber was not placed. Board invalid.")
         }
         gamePieceStateManager = CatanGamePieceStateManager(this)
+        constraintManager.resetItAll(this.players)
     }
 
     override fun printBoard() {
@@ -104,6 +108,9 @@ class CatanSecondBoard(
 
     override fun placeSettlement(subCoordinate: CatanCoordinate, gamePiece: CatanGamePiece) {
         if (gamePieceStateManager.isValidSettlementLocation(subCoordinate, gamePiece)) {
+            //TODO: Handle difference between settlement and city. City not supported.
+            constraintManager.playerReceivedTheseCards(listOf(CatanResource.WHEAT, CatanResource.WOOD, CatanResource.BRICK, CatanResource.SHEEP))
+            constraintManager.playerBuiltSettlement(gamePiece.color)
             gamePieceLocations[subCoordinate] = gamePiece
             hexCoordinateNodeViewModelMap[subCoordinate]?.gamePiece = gamePiece
         }
@@ -120,8 +127,11 @@ class CatanSecondBoard(
 
         println("Empty Road: ${emptyRoadSlot}, isValidRoadPlacement: $isValidRoadPlacement")
 
-        if (emptyRoadSlot && isValidRoadPlacement)
+        if (emptyRoadSlot && isValidRoadPlacement) {
+            constraintManager.playerReceivedTheseCards(listOf(CatanResource.WOOD, CatanResource.BRICK))
+            constraintManager.playerBuildRoad(color)
             roadPieceLocations[sanitizedRoadCoordinates] = color
+        }
         else
             throw Exception("Empty Road: ${emptyRoadSlot}, isValidRoadPlacement: $isValidRoadPlacement")
     }

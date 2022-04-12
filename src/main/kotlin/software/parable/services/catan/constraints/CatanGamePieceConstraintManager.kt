@@ -40,6 +40,7 @@ object CatanGamePieceConstraintManager {
         addCard(CatanResource.WOOD)
         addCard(CatanResource.BRICK)
         addCard(CatanResource.SHEEP)
+        playerPieceState[color]!!.settlementPieceCount--
     }
 
     fun playerBuildCity(color: CatanColor) {
@@ -49,12 +50,14 @@ object CatanGamePieceConstraintManager {
         addCard(CatanResource.WHEAT)
         addCard(CatanResource.STONE)
         addCard(CatanResource.STONE)
+        playerPieceState[color]!!.cityPieceCount--
     }
 
     fun playerBuildRoad(color: CatanColor) {
         if(playerPieceState[color]!!.roadPieceCount < 1) throw Exception("Not enough roads M'Lord.")
         addCard(CatanResource.BRICK)
         addCard(CatanResource.WOOD)
+        playerPieceState[color]!!.roadPieceCount--
     }
 
     private fun addCard(type: CatanResource){
