@@ -77,6 +77,7 @@ object CatanGamePieceConstraintManager {
             CatanResource.SHEEP ->
                 if(resourceCardsAvailable.sheepCount < resourceCardsAvailable.maxCardCount)
                     resourceCardsAvailable.sheepCount++ else throw Exception("Max Card Limit")
+            CatanResource.DESERT, CatanResource.THREE_FOR_ONE_PORT -> throw Exception("Not a card.")
         }
     }
     private fun removeCard(type: CatanResource){
@@ -96,6 +97,7 @@ object CatanGamePieceConstraintManager {
             CatanResource.SHEEP ->
                 if(resourceCardsAvailable.sheepCount > 0)
                     resourceCardsAvailable.sheepCount-- else throw Exception("Not Enough Cards M'Lord")
+            CatanResource.DESERT, CatanResource.THREE_FOR_ONE_PORT -> throw Exception("Not a card.")
         }
     }
 }
