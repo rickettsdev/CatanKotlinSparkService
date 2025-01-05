@@ -23,13 +23,7 @@ dependencies {
     implementation("com.sparkjava:spark-core:2.5.4")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.11.4")
     implementation(kotlin("stdlib"))
-    // Use the Kotlin JUnit 5 integration.
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-
-    // Use the JUnit 5 integration.
-    testImplementation(libs.junit.jupiter.engine)
-
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 
     // This dependency is used by the application.
     implementation(libs.guava)
@@ -49,5 +43,5 @@ application {
 
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
-    useJUnitPlatform()
+    useJUnit()
 }
